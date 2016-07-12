@@ -43,7 +43,6 @@ func (self *UILayoutState) buildBody() {
 
 	ui.Body.AddRows(
 		ui.NewRow(
-			//ui.NewCol(12, 0, par),
 			ui.NewCol(4, 0, self.MessageRateWidget, self.MinuteStats.Widget, self.HourStats.Widget, self.SecondsChatAggregator.Widget, self.MinuteChatAggregator.Widget),
 			ui.NewCol(8, 0, self.Header, self.ChatHistory.Widget, self.ChatBox.Widget),
 		),
@@ -176,8 +175,8 @@ func NewUILayoutState() *UILayoutState {
 		for {
 			msg := <-uiState.MessageStream
 			// increment counters, update buffers, rerender views
-			uiState.MinuteMessageRate.IncrementAndRender(uiState.MessageRateWidget)
 			uiState.HourMessageRate.IncrementAndRender(uiState.MessageRateWidget)
+			uiState.MinuteMessageRate.IncrementAndRender(uiState.MessageRateWidget)
 			uiState.MessageRateWidget.Lines[0] = *uiState.MinuteMessageRate.Widget
 			uiState.MessageRateWidget.Lines[1] = *uiState.HourMessageRate.Widget
 
@@ -197,15 +196,6 @@ func NewUILayoutState() *UILayoutState {
 			uiState.ChatHistory.updateAndRender("<<<WARNING: CHAT DISCONNECTED.>>>")
 		}
 	}()
-
-	go func() {
-		for {
-			_ = <- time.Tick(1 * time.Second)
-			ui.Clear()
-			ui.Render(ui.Body)
-		}
-	}()
-
 
 	return &uiState
 }
@@ -363,7 +353,7 @@ func NewMessageStatsChart(barColor, numColor ui.Attribute, counter *SlidingWindo
 }
 
 func (self *MessageStatsChart) Render() {
-	self.Widget.Data = self.Counter.Data
+	self.Widget.Data = self.Counter.Stats
 	ui.Render(self.Widget)
 }
 
@@ -378,7 +368,7 @@ func NewMessageRateSparkline(color ui.Attribute, counter *SlidingWindowCounter) 
 	formattedTime := strconv.Itoa(counter.NumWindows * int(counter.Window) / int(time.Minute))
 	widget.Title = "Message Rate (~ " + formattedTime + " Minutes)"
 	widget.Height = 2
-	widget.LineColor = ui.ColorCyan
+	widget.LineColor = color
 	widget.TitleColor = ui.ColorGreen
 
 	return &MessageRateSparkline{
@@ -419,9 +409,4 @@ func Start(cmd *cobra.Command, args []string) {
 	uiState := NewUILayoutState()
 	uiState.InitBodyAndLoop()
 
-	ui.Clear()
-	ui.Body.Align()
-	ui.Render(ui.Body) // feel free to call Render, it's async and non-block
-
-	ui.Loop()
 }

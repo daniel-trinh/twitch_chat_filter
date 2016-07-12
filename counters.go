@@ -53,16 +53,11 @@ func NewSlidingWindowCounter(timeWindow time.Duration, numWindows int) (*Sliding
 func (self *SlidingWindowCounter) calculateStats() (min, max, avg, sum int) {
 	min, max, avg, sum = math.MaxInt32, math.MinInt32, 0, 0
 	for _, x := range self.Data {
-		if min > 0 {
-			min = Min(x, min)
-		} else {
-			min = x
-		}
+		min = Min(x, min)
 		max = Max(x, max)
 		sum += x
 	}
 	avg = sum / len(self.Data)
-
 	return min, max, avg, sum
 }
 
