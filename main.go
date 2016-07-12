@@ -67,7 +67,6 @@ func RegisterIrcAndUiHandlers(c *irc.Conn) (quits chan bool, msgs chan *IrcMessa
 	// And a signal on disconnect
 	c.HandleFunc(irc.DISCONNECTED,
 		func(conn *irc.Conn, line *irc.Line) {
-			fmt.Println(line)
 			quits <- true
 		},
 	)
@@ -76,6 +75,12 @@ func RegisterIrcAndUiHandlers(c *irc.Conn) (quits chan bool, msgs chan *IrcMessa
 		func(conn *irc.Conn, line *irc.Line) {
 			message := strings.Join(line.Args[1:], "")
 			msgs <- &IrcMessage{line.Nick, message}
+		},
+	)
+
+	c.HandleFunc(irc.PING,
+		func(conn *irc.Conn, line *irc.Line) {
+			conn.Pong(line.Host)
 		},
 	)
 
@@ -90,12 +95,6 @@ func RegisterIrcAndUiHandlers(c *irc.Conn) (quits chan bool, msgs chan *IrcMessa
 		inputStr := kbdEvent.Data.(ui.EvtKbd).KeyStr
 
 		typings <- inputStr
-		//if chatbox.Text == chatboxDefaultText {
-		//	chatbox.Text = inputStr
-		//} else {
-		//	chatbox.Text = chatbox.Text + inputStr
-		//}
-		//ui.Render(chatbox)
 	})
 
 	ui.Handle("/timer/1s", func(e ui.Event) {
@@ -103,6 +102,18 @@ func RegisterIrcAndUiHandlers(c *irc.Conn) (quits chan bool, msgs chan *IrcMessa
 		ui.Body.Align()
 		ui.Render(ui.Body)
 	})
+
+	go func() {
+		for {
+			_ = <- time.Tick(5 * time.Second)
+			if !c.Connected() {
+				err := c.Connect()
+				if err == nil {
+					c.Join("#"+IrcChannel)
+				}
+			}
+		}
+	}()
 
 	return quits, msgs, typings
 }
@@ -158,7 +169,7 @@ func NewUILayoutState() *UILayoutState {
 	uiState := UILayoutState{
 		Header: header,
 		ChatHistory: NewChatHistory(),
-		ChatBox: NewChatBox(typings),
+		ChatBox: NewChatBox(typings, messages, c),
 		MinuteStats: NewMessageStatsChart(ui.ColorCyan, ui.ColorRed, minuteCounter),
 		HourStats: NewMessageStatsChart(ui.ColorYellow, ui.ColorMagenta, hourCounter),
 		MessageRateWidget: messageRateWidget,
@@ -193,9 +204,11 @@ func NewUILayoutState() *UILayoutState {
 	go func() {
 		for {
 			_ = <- quits
-			uiState.ChatHistory.updateAndRender("<<<WARNING: CHAT DISCONNECTED.>>>")
+			uiState.ChatHistory.updateAndRender("<<<WARNING: CHAT DISCONNECTED. Reconnecting in a few seconds...>>>")
 		}
 	}()
+
+
 
 	return &uiState
 }
@@ -207,7 +220,9 @@ type ChatBox struct {
 	Input          <-chan string
 }
 
-func NewChatBox(input <-chan string) *ChatBox {
+
+
+func NewChatBox(input <-chan string, messages chan<- *IrcMessage, c *irc.Conn) *ChatBox {
 	defaultText := "Start typing, press Enter to send message"
 
 	widget := ui.NewPar(defaultText)
@@ -216,12 +231,35 @@ func NewChatBox(input <-chan string) *ChatBox {
 	widget.TextFgColor = ui.ColorDefault
 	widget.BorderLabel = "Chat"
 	widget.BorderFg = ui.ColorDefault
-	//
-	//go func() {
-	//	for {
-	//		typing := <-input
-	//	}
-	//}()
+
+	go func() {
+		for {
+			typing := <-input
+			if typing == "C-8" { // backspace
+				if widget.Text == defaultText {
+					widget.Text = ""
+				} else {
+					if len(widget.Text) > 0 {
+						widget.Text = widget.Text[:len(widget.Text)-1]
+					}
+				}
+			} else if typing == "<enter>" {
+				c.Privmsg("#"+IrcChannel, widget.Text)
+				messages <- &IrcMessage{
+					Nick: IrcUser,
+					Message: widget.Text,
+				}
+				widget.Text = ""
+			} else {
+				if widget.Text == defaultText {
+					widget.Text = ReplaceText(typing)
+				} else {
+					widget.Text = widget.Text + ReplaceText(typing)
+				}
+			}
+			ui.Render(widget)
+		}
+	}()
 
 	return &ChatBox{
 		Widget: widget,
@@ -229,7 +267,14 @@ func NewChatBox(input <-chan string) *ChatBox {
 		Data: defaultText,
 		Input: input,
 	}
+}
 
+func ReplaceText(input string) string {
+	if input == "<space>" {
+		return " "
+	} else {
+		return input
+	}
 }
 
 type ChatHistory struct {
