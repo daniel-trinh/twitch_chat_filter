@@ -14,6 +14,8 @@ type SlidingWindowCounter struct {
 	Avg int
 	Sum int
 	Stats []int // contains Min, Max, Avg, Sum
+	Window time.Duration
+	NumWindows int
 }
 
 func NewSlidingWindowCounter(timeWindow time.Duration, numWindows int) (*SlidingWindowCounter, error) {
@@ -27,6 +29,8 @@ func NewSlidingWindowCounter(timeWindow time.Duration, numWindows int) (*Sliding
 		Avg: 0,
 		Sum: 0,
 		Stats: make([]int, 3),
+		Window: timeWindow,
+		NumWindows: numWindows,
 	}
 	// Create a new Sparkline window after every timeWindow
 	go func() {
