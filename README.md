@@ -2,17 +2,12 @@
 
 Twitch chat streams can become unreadable when there are many people typing at the same time.
 It is not uncommon to have Twitch streams with over 100,000 concurrent viewers --
-when there are this many people in the same chat room, it can become quitee difficult to parse anything meaningful
+when there are this many people in the same chat room, it can become quite difficult to parse anything meaningful
 from the chat stream.
 
 I built this toy CLI UI app to filter out duplicate messages, and to monitor realtime statistics for
 twitch chat channels that have non trivial amounts of chat activity. Removing duplicates gets rid of
-common chat messages like emoticons and reactions (messages like "LUL", "Kappa", etc), leaving behind
-
-There may be ways of improving the filtering in the future, using some form of streaming TF-IDF for example,
-(see [Streaming Trend Detection in Twitter](http://www.cs.uccs.edu/~jkalita/work/reu/REUFinalPapers2010/Benhardus.pdf)),
-or doing something simpler with n-gram and stop-word checking, but until I actually have a reason to implement those things,
-this app will be as is for now.
+common chat messages like emoticons and reactions (messages like "LUL", "Kappa", etc), leaving behind more relevant messages.
 
 You can see the app in action by clicking the image below:
 [![Twitch Chat Filterer](http://i.imgur.com/m50Kii1.gif)](https://www.youtube.com/watch?v=i8sRO7_qvOY "Twitch Chat Filterer")
@@ -65,3 +60,10 @@ Flags:
   -l, --ttl duration                    Sliding time window in seconds of how long to keep counts of messages in the trending bucket (default 10s)
   -u, --user string                     Required. IRC username to connect with
 ```
+
+## Future?
+
+There may be ways of improving the filtering in the future, using some form of streaming TF-IDF for example,
+(see [Streaming Trend Detection in Twitter](http://www.cs.uccs.edu/~jkalita/work/reu/REUFinalPapers2010/Benhardus.pdf)),
+or doing something simpler with n-gram and stop-word checking, but until I actually have a reason to implement those things,
+this app will be as is for now.
