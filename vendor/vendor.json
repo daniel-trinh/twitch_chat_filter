@@ -1,0 +1,105 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "OFu4xJEIjiI8Suu+j/gabfp+y6Q=",
+			"origin": "github.com/stretchr/testify/vendor/github.com/davecgh/go-spew/spew",
+			"path": "github.com/davecgh/go-spew/spew",
+			"revision": "f6abca593680b2315d2075e0f5e2a9751e3f431a",
+			"revisionTime": "2017-06-01T20:57:54Z"
+		},
+		{
+			"checksumSHA1": "CkjxTzNLzd3KXZS5fbXmG9KVu/4=",
+			"path": "github.com/fluffle/goirc/client",
+			"revision": "2ece5aab675bac99b291f006e95710d8b9d0758e",
+			"revisionTime": "2017-06-02T21:39:41Z"
+		},
+		{
+			"checksumSHA1": "TpJhYJVip8wTO9sgWbyQQOaTvZc=",
+			"path": "github.com/fluffle/goirc/logging",
+			"revision": "2ece5aab675bac99b291f006e95710d8b9d0758e",
+			"revisionTime": "2017-06-02T21:39:41Z"
+		},
+		{
+			"checksumSHA1": "NXxmFrZZ60MRX1YSnHSNe1kdfcA=",
+			"path": "github.com/fluffle/goirc/state",
+			"revision": "2ece5aab675bac99b291f006e95710d8b9d0758e",
+			"revisionTime": "2017-06-02T21:39:41Z"
+		},
+		{
+			"checksumSHA1": "Bjl8V249BSzIN/LuyybVPRsvsHE=",
+			"path": "github.com/gizak/termui",
+			"revision": "72304ddb9b4e9838426a021aad64a5a860e98324",
+			"revisionTime": "2017-05-02T14:12:00Z"
+		},
+		{
+			"checksumSHA1": "HGhun7iAP0ery4shaajz8qleUfQ=",
+			"path": "github.com/golang/mock/gomock",
+			"revision": "93f6609a15b7de76bd49259f1f9a6b58df358936",
+			"revisionTime": "2017-06-22T20:25:52Z"
+		},
+		{
+			"checksumSHA1": "nvxtegYMD+oJQsN+G0ZsrOycFmI=",
+			"path": "github.com/karlseguin/ccache",
+			"revision": "3ba9789cfd2cb7b4fb4657efc994cc1c599a648c",
+			"revisionTime": "2017-02-17T06:08:20Z"
+		},
+		{
+			"checksumSHA1": "7hln62oZPZmyqEmgXaybf9WxQ7A=",
+			"path": "github.com/maruel/panicparse/stack",
+			"revision": "ae43f192cef2add653fe1481a3070ed00a4a6981",
+			"revisionTime": "2017-03-28T20:03:51Z"
+		},
+		{
+			"checksumSHA1": "cJE7dphDlam/i7PhnsyosNWtbd4=",
+			"path": "github.com/mattn/go-runewidth",
+			"revision": "97311d9f7767e3d6f422ea06661bc2c7a19e8a5d",
+			"revisionTime": "2017-05-10T07:48:58Z"
+		},
+		{
+			"checksumSHA1": "L3leymg2RT8hFl5uL+5KP/LpBkg=",
+			"path": "github.com/mitchellh/go-wordwrap",
+			"revision": "ad45545899c7b13c020ea92b2072220eefad42b8",
+			"revisionTime": "2015-03-14T17:03:34Z"
+		},
+		{
+			"checksumSHA1": "j8jNV1hVHRKaAT/VeGji/EWUlwE=",
+			"path": "github.com/nsf/termbox-go",
+			"revision": "72800b73ab9a3c78df350738298b0361354772ff",
+			"revisionTime": "2017-06-18T12:44:39Z"
+		},
+		{
+			"checksumSHA1": "zKKp5SZ3d3ycKe4EKMNT0BqAWBw=",
+			"origin": "github.com/stretchr/testify/vendor/github.com/pmezard/go-difflib/difflib",
+			"path": "github.com/pmezard/go-difflib/difflib",
+			"revision": "f6abca593680b2315d2075e0f5e2a9751e3f431a",
+			"revisionTime": "2017-06-01T20:57:54Z"
+		},
+		{
+			"checksumSHA1": "7qRuI2uyis6CoKEaaWm4Dq8dxvA=",
+			"path": "github.com/spf13/cobra",
+			"revision": "35136c09d8da66b901337c6e86fd8e88a1a255bd",
+			"revisionTime": "2017-01-30T21:45:31Z"
+		},
+		{
+			"checksumSHA1": "5KvHyB1CImtwZT3fwNkNUlc8R0k=",
+			"path": "github.com/spf13/pflag",
+			"revision": "9ff6c6923cfffbcd502984b8e0c80539a94968b7",
+			"revisionTime": "2017-01-30T21:42:45Z"
+		},
+		{
+			"checksumSHA1": "5NBHAe3S15q3L9hOLThnMZjIZRE=",
+			"path": "github.com/stretchr/testify/assert",
+			"revision": "f6abca593680b2315d2075e0f5e2a9751e3f431a",
+			"revisionTime": "2017-06-01T20:57:54Z"
+		},
+		{
+			"checksumSHA1": "fjMK2G5arnjllpoeBYeyf9Y2Iok=",
+			"path": "golang.org/x/net/proxy",
+			"revision": "59a0b19b5533c7977ddeb86b017bf507ed407b12",
+			"revisionTime": "2017-06-03T08:13:02Z"
+		}
+	],
+	"rootPath": "github.com/daniel-trinh/twitch_chat_filter"
+}
